@@ -77,6 +77,19 @@ public class Events implements Listener {
     }
 
     @EventHandler
+    public void RegisterPlayerDataOnJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        FileHandler fh = plugin.getFH();
+
+        FileConfiguration pData = fh.getPStats();
+         if(!pData.contains(player.getUniqueId().toString())) {
+            pData.set(player.getUniqueId() + ".clanHistory", null);
+            pData.set(player.getUniqueId() + ".currentClan", null);
+            fh.savePStats();
+         }
+    }
+
+    @EventHandler
     public void onKill(PlayerDeathEvent event) {
         Econo econ = CX.getEcon();
         FileHandler fh = plugin.getFH();
@@ -87,7 +100,7 @@ public class Events implements Listener {
             Player killer = victim.getKiller();
 
             if (killer != null) {
-                CX.econ.deposit(killer, killReward);
+                econ.deposit(killer, killReward);
                 killer.sendMessage(MSG.color(prefix + "&2You Won: &e&l" + killReward));
             }
         }

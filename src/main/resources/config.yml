@@ -38,7 +38,7 @@ welcome-message:
   no-clan:
     - "&f--------------------------------"
     - "&eWelcome back!"
-    - "&7Use &a/cl create &7to create your clan."
+    - "&7Use &a/cls create &7to create your clan."
     - "&f--------------------------------"
 
   self-clan:

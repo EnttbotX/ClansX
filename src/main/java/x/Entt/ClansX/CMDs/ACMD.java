@@ -80,6 +80,7 @@ public class ACMD implements CommandExecutor, TabCompleter {
         Econo econ = CX.getEcon();
         fh.reloadConfig();
         fh.reloadData();
+        fh.reloadPStats();
         econ.reload();
         sender.sendMessage(MSG.color(prefix + "&aPlugin and all files reloaded."));
     }

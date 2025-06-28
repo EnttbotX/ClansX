@@ -654,33 +654,52 @@ public class CCMD implements CommandExecutor, TabCompleter {
         sender.sendMessage(MSG.color(prefix + "&2Clan reported: &e" + reportedClan + ". Reason: " + reason));
     }
 
-    private void edit(Player player, String clanName, String[] args) {
-        if (!isLeader(player, clanName)) {
-            player.sendMessage(MSG.color(prefix + "&cOnly the leader can modify the props of the clan!"));
-        }
-
-        String playerClan = getPlayerClan(player.getName());
-
-        if (playerClan == null || playerClan.isEmpty()) {
-            player.sendMessage(MSG.color(prefix + "&cYou are not in a clan."));
+    public void edit(Player p, String clanName, String[] args) {
+        if (!isLeader(p, clanName)) {
+            p.sendMessage(MSG.color(prefix + "&cOnly the clan leader can perform this action."));
             return;
         }
 
-        if (args.length == 3) {
-            String type = args[1];
-            String value = args[2];
-            FileHandler fh = plugin.getFH();
-            FileConfiguration data = fh.getData();
+        if (getPlayerClan(p.getName()) == null) {
+            p.sendMessage(MSG.color(prefix + "&cYou are not in a clan."));
+            return;
+        }
 
-            if (type.equalsIgnoreCase("name")) {
-                data.set("Clans." + clanName + ".Name", value);
-                fh.saveData();
-                player.sendMessage(MSG.color(prefix + "&3Clan Name changed to: &f" + value));
-            } else if (type.equalsIgnoreCase("privacy")) {
-                data.set("Clans." + clanName + ".Privacy", value);
-                fh.saveData();
-                player.sendMessage(MSG.color(prefix + "&3Clan Privacy changed to: &f" + value));
+        if (args.length < 3) return;
+
+        String type = args[1];
+        String value = String.join(" ", Arrays.copyOfRange(args, 2, args.length));
+        FileHandler fh = plugin.getFH();
+        FileConfiguration d = fh.getData();
+
+        switch (type.toLowerCase()) {
+            case "name": {
+                if (d.contains("Clans." + value)) {
+                    p.sendMessage(MSG.color(prefix + "&cA clan with that name already exists."));
+                    return;
+                }
+
+                Object clanData = d.get("Clans." + clanName);
+                if (clanData == null) {
+                    p.sendMessage(MSG.color(prefix + "&cClan data not found."));
+                    return;
+                }
+
+                boolean success = plugin.getFH().renameClan(p ,clanName, value);
+                if (success) {
+                    p.sendMessage(MSG.color(prefix + "&aClan name changed to &f" + value));
+                } else {
+                    p.sendMessage(MSG.color(prefix + "&cFailed to rename clan. Name might already exist."));
+                }
+
+                break;
             }
+
+            case "privacy":
+                d.set("Clans." + clanName + ".Privacy", value);
+                fh.saveData();
+                p.sendMessage(MSG.color(prefix + "&3Clan privacy changed to &f" + value));
+                break;
         }
     }
 
@@ -820,7 +839,6 @@ public class CCMD implements CommandExecutor, TabCompleter {
                 break;
 
             case 3:
-                // TODO: Enable when war system is implemented
             /*
             if (args[0].equalsIgnoreCase("war")) {
                 switch (args[1].toLowerCase()) {
