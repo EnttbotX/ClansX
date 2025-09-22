@@ -1,168 +1,169 @@
 package x.Entt.ClansX.Utils;
 
-import net.milkbowl.vault.economy.Economy;
-
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.RegisteredServiceProvider;
-
-import x.Entt.ClansX.CX;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-
-import static org.bukkit.Bukkit.getServer;
-import static x.Entt.ClansX.CX.prefix;
+import net.milkbowl.vault.economy.Economy;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.RegisteredServiceProvider;
+import x.Entt.ClansX.CX;
 
 public class Econo {
-
-    private final CX plugin;
-    private String system;
-
-    public static Economy vault;
-    private final Map<UUID, Double> internalBalances = new HashMap<>();
-    private File balanceFile;
-    private FileConfiguration balanceCfg;
-
-    public Econo(CX plugin) {
-        this.plugin = plugin;
-    }
-
-    public String getSystem() {
-        if (system == null) {
-            FileConfiguration cfg = plugin.getConfig();
-            system = cfg.getString("economy.system", "Vault").toLowerCase();
-        }
-        return system;
-    }
-
-    public String reload() {
-        if (system == null) {
-            FileConfiguration cfg = plugin.getConfig();
-            system = cfg.getString("economy.system", "Vault").toLowerCase();
-        }
-        return system;
-    }
-
-    public boolean setupEconomy() {
-        switch (getSystem()) {
-            case "vault":
-                RegisteredServiceProvider<Economy> provider = getServer()
-                        .getServicesManager()
-                        .getRegistration(Economy.class);
-                vault = (provider != null) ? provider.getProvider() : null;
-                if (vault != null) return true;
-
-                Bukkit.getConsoleSender().sendMessage(MSG.color(prefix + "&cVault provider is null, using Internal Econ."));
-                system = "internal";
-                loadInternal();
-                return true;
-
-            case "internal":
-                loadInternal();
-                return true;
-
-            default:
-                Bukkit.getConsoleSender().sendMessage(MSG.color(prefix + "&cEconomy system is null!: " + system));
-                return false;
-        }
-    }
-
-    public double getBalance(OfflinePlayer player) {
-        return switch (getSystem()) {
-            case "vault" -> vault.getBalance(player);
-            case "internal" -> internalBalances.getOrDefault(player.getUniqueId(), 0.0);
-            default -> 0;
-        };
-    }
-
-    public void deposit(OfflinePlayer player, double amount) {
-        if (amount < 0) return;
-        switch (getSystem()) {
-            case "vault":
-                vault.depositPlayer(player, amount).transactionSuccess();
-                return;
-            case "internal":
-                internalBalances.merge(player.getUniqueId(), amount, Double::sum);
-                saveInternal();
-                return;
-            default:
-        }
-    }
-
-    public void withdraw(OfflinePlayer player, double amount) {
-        if (amount < 0) return;
-        switch (getSystem()) {
-            case "vault":
-                vault.withdrawPlayer(player, amount).transactionSuccess();
-                return;
-            case "internal":
-                UUID id = player.getUniqueId();
-                double current = internalBalances.getOrDefault(id, 0.0);
-                if (current < amount) return;
-                internalBalances.put(id, current - amount);
-                saveInternal();
-                return;
-            default:
-        }
-    }
-
-    public boolean has(OfflinePlayer player, double amount) {
-        if (amount < 0) return false;
-        return switch (getSystem()) {
-            case "vault" -> vault.has(player, amount);
-            case "internal" -> internalBalances.getOrDefault(player.getUniqueId(), 0.0) >= amount;
-            default -> false;
-        };
-    }
-
-    private void loadInternal() {
-        balanceFile = new File(plugin.getDataFolder(), "balances.yml");
-        if (!balanceFile.exists()) {
-            balanceFile.getParentFile().mkdirs();
-            try {
-                balanceFile.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        balanceCfg = YamlConfiguration.loadConfiguration(balanceFile);
-
-        for (String key : balanceCfg.getKeys(false)) {
-            try {
-                UUID id = UUID.fromString(key);
-                double money = balanceCfg.getDouble(key + ".Money", 0.0);
-                internalBalances.put(id, money);
-            } catch (IllegalArgumentException ignored) {}
-        }
-    }
-
-    private void saveInternal() {
-        if (balanceCfg == null) return;
-
-        for (String key : balanceCfg.getKeys(false)) {
-            balanceCfg.set(key, null);
-        }
-
-        for (Map.Entry<UUID, Double> entry : internalBalances.entrySet()) {
-            UUID uuid = entry.getKey();
-            double bal = entry.getValue();
-            String name = Bukkit.getOfflinePlayer(uuid).getName();
-            if (name == null) name = "Unknown";
-
-            balanceCfg.set(uuid + ".Name", name);
-            balanceCfg.set(uuid + ".Money", bal);
-        }
-
-        try {
-            balanceCfg.save(balanceFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+  private final CX plugin;
+  
+  private String system;
+  
+  public static Economy vault;
+  
+  private final Map<UUID, Double> internalBalances = new HashMap<>();
+  
+  private File balanceFile;
+  
+  private FileConfiguration balanceCfg;
+  
+  public Econo(CX plugin) {
+    this.plugin = plugin;
+  }
+  
+  public String getSystem() {
+    if (this.system == null) {
+      FileConfiguration cfg = this.plugin.getConfig();
+      this.system = cfg.getString("economy.system", "Vault").toLowerCase();
+    } 
+    return this.system;
+  }
+  
+  public String reload() {
+    if (this.system == null) {
+      FileConfiguration cfg = this.plugin.getConfig();
+      this.system = cfg.getString("economy.system", "Vault").toLowerCase();
+    } 
+    return this.system;
+  }
+  
+  public boolean setupEconomy() {
+    RegisteredServiceProvider<Economy> provider;
+    switch (getSystem()) {
+      case "vault":
+        provider = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
+        vault = (provider != null) ? (Economy)provider.getProvider() : null;
+        if (vault != null)
+          return true; 
+        Bukkit.getConsoleSender().sendMessage(MSG.color(CX.prefix + "&cVault provider is null, using Internal Econ."));
+        this.system = "internal";
+        loadInternal();
+        return true;
+      case "internal":
+        loadInternal();
+        return true;
+    } 
+    Bukkit.getConsoleSender().sendMessage(MSG.color(CX.prefix + "&cEconomy system is null!: " + CX.prefix));
+    return false;
+  }
+  
+  public double getBalance(OfflinePlayer player) {
+    switch (getSystem()) {
+      case "vault":
+      
+      case "internal":
+      
+    } 
+    return 
+      
+      0.0D;
+  }
+  
+  public void deposit(OfflinePlayer player, double amount) {
+    if (amount < 0.0D)
+      return; 
+    switch (getSystem()) {
+      case "vault":
+        vault.depositPlayer(player, amount).transactionSuccess();
+        return;
+      case "internal":
+        this.internalBalances.merge(player.getUniqueId(), Double.valueOf(amount), Double::sum);
+        saveInternal();
+        return;
+    } 
+  }
+  
+  public void withdraw(OfflinePlayer player, double amount) {
+    UUID id;
+    double current;
+    if (amount < 0.0D)
+      return; 
+    switch (getSystem()) {
+      case "vault":
+        vault.withdrawPlayer(player, amount).transactionSuccess();
+        return;
+      case "internal":
+        id = player.getUniqueId();
+        current = ((Double)this.internalBalances.getOrDefault(id, Double.valueOf(0.0D))).doubleValue();
+        if (current < amount)
+          return; 
+        this.internalBalances.put(id, Double.valueOf(current - amount));
+        saveInternal();
+        return;
+    } 
+  }
+  
+  public boolean has(OfflinePlayer player, double amount) {
+    if (amount < 0.0D)
+      return false; 
+    switch (getSystem()) {
+      case "vault":
+      
+      case "internal":
+        return 
+          
+          (((Double)this.internalBalances.getOrDefault(player.getUniqueId(), Double.valueOf(0.0D))).doubleValue() >= amount);
+    } 
+    return false;
+  }
+  
+  private void loadInternal() {
+    this.balanceFile = new File(this.plugin.getDataFolder(), "balances.yml");
+    if (!this.balanceFile.exists()) {
+      this.balanceFile.getParentFile().mkdirs();
+      try {
+        this.balanceFile.createNewFile();
+      } catch (IOException e) {
+        e.printStackTrace();
+      } 
+    } 
+    this.balanceCfg = (FileConfiguration)YamlConfiguration.loadConfiguration(this.balanceFile);
+    for (String key : this.balanceCfg.getKeys(false)) {
+      try {
+        UUID id = UUID.fromString(key);
+        double money = this.balanceCfg.getDouble(key + ".Money", 0.0D);
+        this.internalBalances.put(id, Double.valueOf(money));
+      } catch (IllegalArgumentException illegalArgumentException) {}
+    } 
+  }
+  
+  private void saveInternal() {
+    if (this.balanceCfg == null)
+      return; 
+    for (String key : this.balanceCfg.getKeys(false))
+      this.balanceCfg.set(key, null); 
+    for (Map.Entry<UUID, Double> entry : this.internalBalances.entrySet()) {
+      UUID uuid = entry.getKey();
+      double bal = ((Double)entry.getValue()).doubleValue();
+      String name = Bukkit.getOfflinePlayer(uuid).getName();
+      if (name == null)
+        name = "Unknown"; 
+      this.balanceCfg.set(String.valueOf(uuid) + ".Name", name);
+      this.balanceCfg.set(String.valueOf(uuid) + ".Money", Double.valueOf(bal));
+    } 
+    try {
+      this.balanceCfg.save(this.balanceFile);
+    } catch (IOException e) {
+      e.printStackTrace();
+    } 
+  }
 }

@@ -1,9 +1,11 @@
 main: x.Entt.ClansX.CX
-version: 1.1.7
+version: 1.1.8
 name: ClansX
 author: Enttbot
 api-version: "1.13"
-softdepend: [Vault, PlaceholderAPI]
+softdepend:
+  - Vault
+  - PlaceholderAPI
 
 commands:
   clansx:

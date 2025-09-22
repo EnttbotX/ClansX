@@ -6,7 +6,7 @@
 
     <groupId>x.Entt</groupId>
     <artifactId>ClansX</artifactId>
-    <version>1.1.7</version>
+    <version>1.1.8</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -39,7 +39,7 @@
         <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
-            <version>2.11.5</version>
+            <version>2.11.6</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
