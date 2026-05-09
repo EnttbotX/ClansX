@@ -1,0 +1,36 @@
+name: "The Holy War of Petoria"
+
+active: false
+
+clans:
+  offensive:
+    - "McDonalds"
+    - "RageClan"
+  defensive:
+    - "Petoria"
+
+influences:
+  RageClan: offensive
+
+stats:
+  offensive:
+    deaths: 231
+    kills: 212
+    points: 1250
+  defensive:
+    deaths: 300
+    kills: 230
+    points: 1850
+
+peace-offers:
+  1:
+    state: pending
+    from: "Petoria"
+    offers:
+      - "def:money:1000"
+      - "off:money:-1000"
+  2:
+    state: accepted
+    from: "McDonalds"
+    offers:
+      - "mdef:white-peace"
