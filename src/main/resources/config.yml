@@ -1,0 +1,153 @@
+#                _                                _
+#             /' `\    /'                       ' |       )
+#           /'   ._) /'                           |    _/~
+#         /'       /' ____     ,____     ____      |_/~
+#       /'       /' /'    )   /'    )  /'    )-- _/|
+#     /'       /' /'    /'  /'    /'  '---,   _/~   |
+#    (_____,/'(__(___,/(__/'    /(__(___,/(,/~      (_,
+#
+#       ░█▀▄░█░█░░░█▀▀░█▀█░▀█▀░▀█▀░█▀▄░█▀█░▀█▀░█░█
+#       ░█▀▄░░█░░░░█▀▀░█░█░░█░░░█░░█▀▄░█░█░░█░░▄▀▄
+#       ░▀▀░░░▀░░░░▀▀▀░▀░▀░░▀░░░▀░░▀▀░░▀▀▀░░▀░░▀░▀
+
+# DO NOT TOUCH THIS
+config-version: 1.3.1
+# DO NOT TOUCH THIS
+
+#TIME FORMATS:
+# H hours
+# D days
+# W weeks
+# Y years
+
+welcome-message: false
+
+updater:
+  enabled: true
+  advert-permission: "clansx.admin"
+
+economy:
+  enabled: true
+  system: "Vault"
+
+  cost:
+    create-clan: 5
+    start-war: 0
+  earn:
+    delete-clan: 1
+
+Temp_And_Log:
+  log_transactions:
+    enabled: true
+    log_cleaning_deadline: "30d"
+
+clans:
+  max-clans: 50
+  max-ally-requests: 20
+  max-alliances: 3 # max alliances per-clan
+  invites-expiration-time: "1d"
+  messages-to-clan: "@" # symbol to send a message to the clan
+  chat-format: "&e&l%cx_clan_name% &c[$role$] &f&l%player_name%&r: $message$" # format when sending a message to the clan
+
+  balance:
+    disband_clan_on_bankrupt: true
+    min: -10000.0
+    max: 100000000000000000000000000000.0
+
+  names:
+    max-length: 4
+    min-length: 1
+    allow-uppercase: true
+    allow-numbers: true
+    blocked: # It detects numbers, symbols, spaces, caps and repetition (like loool = detected as lol)
+      - "shit"
+      - "fuck"
+      - "nigga"
+      - "KKK"
+      - "KGB"
+      - "aternos" # xd
+      - "Labubu" # xd
+
+  prestige:
+    enabled: true
+    acquire-new-prestige: 10000 # xp
+    calc:
+      wars-won: 1000 # xp
+      wars-defeated: -1000 # xp
+
+  wars:
+    enabled: true
+    max-duration: "7d" # use -1 to no duration limit on wars
+    max-wars-per-clan: 3
+    min-score-to-treat: 1000
+    ask-for-peace-duration: "15h"
+    duration-of-the-truces: "5d" # period where both clans cannot declare war between they after a war
+    points:
+      kill: 10
+      death: -5
+      leader-killed: 50
+      leader-death: -25
+
+    influences: # Clans with high prestige can join to a side of the war
+      enabled: false
+      min-prestige: 10000
+
+    peace-terms:
+      white-peace: true
+      money: true
+      xp: true
+      disband: true
+      unify-clans: true
+      multi-terms: false
+
+    names: # Will choose one randomly from this list
+      - "The Holy War Of $defender_clan$"
+      - "Offensive of $offensive_clan$"
+      - "The $defender_clan$ Crusade"
+      - "$offensive_clan$'s Onslaught"
+      - "War of the $defender_clan$ Ascendancy"
+      - "The $offensive_clan$ Conquest"
+      - "The $defender_clan$ War of Defiance"
+      - "$offensive_clan$'s Campaign of Ruin"
+      - "The Siege of $defender_clan$"
+      - "The $offensive_clan$ Invasion"
+      - "The $defender_clan$ War for Survival"
+      - "$offensive_clan$'s War of Aggression"
+      - "The Battle for $defender_clan$ Lands"
+      - "The $offensive_clan$ Subjugation"
+      - "The $defender_clan$ Uprising"
+      - "The Great $offensive_clan$- $defender_clan$ War"
+      - "War of $defender_clan$ Independence"
+      - "$offensive_clan$'s War of Expansion"
+      - "The $defender_clan$ Retribution"
+      - "The $offensive_clan$ Annihilation"
+      - "The $defender_clan$ Resilience War"
+      - "The $offensive_clan$ Blitz"
+      - "The $defender_clan$ Shieldwall"
+      - "$offensive_clan$'s Final Offensive"
+      - "The War of $defender_clan$'s Last Stand"
+      - "The $offensive_clan$ Dominion War"
+      - "The $defender_clan$ Vengeance"
+      - "The $offensive_clan$ Iron March"
+      - "The Scourge of $offensive_clan$"
+      - "The $defender_clan$ Guardian War"
+      - "The $offensive_clan$ Blood Campaign"
+      - "The War of Broken Shields ($defender_clan$)"
+      - "The $offensive_clan$ Warpath"
+      - "The $defender_clan$ Unification War"
+      - "$offensive_clan$'s Grab for Power"
+      - "The Sundering of $defender_clan$"
+      - "The $offensive_clan$ Juggernaut"
+      - "The $defender_clan$ War of Honor"
+      - "The $offensive_clan$ Purge"
+      - "The $defender_clan$ Counter-Offensive"
+      - "The War of Twin Clans ($offensive_clan$ vs $defender_clan$)"
+      - "The $offensive_clan$ Hammerfall"
+      - "The Last War of $defender_clan$"
+      - "$offensive_clan$'s Campaign of Fire"
+      - "The $defender_clan$ Resurgence"
+      - "The $offensive_clan$- $defender_clan$ Conflict"
+      - "The War for $defender_clan$'s Heart"
+      - "The $offensive_clan$ Stranglehold"
+      - "The $defender_clan$ Rebellion"
+      - "The $offensive_clan$ War of Supremacy"

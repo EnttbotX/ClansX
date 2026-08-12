@@ -1,0 +1,632 @@
+#                _                                _
+#             /' `\    /'                       ' |       )
+#           /'   ._) /'                           |    _/~
+#         /'       /' ____     ,____     ____      |_/~
+#       /'       /' /'    )   /'    )  /'    )-- _/|
+#     /'       /' /'    /'  /'    /'  '---,   _/~   |
+#    (_____,/'(__(___,/(__/'    /(__(___,/(,/~      (_,
+#
+#       ░█▀▄░█░█░░░█▀▀░█▀█░▀█▀░▀█▀░█▀▄░█▀█░▀█▀░█░█
+#       ░█▀▄░░█░░░░█▀▀░█░█░░█░░░█░░█▀▄░█░█░░█░░▄▀▄
+#       ░▀▀░░░▀░░░░▀▀▀░▀░▀░░▀░░░▀░░▀▀░░▀▀▀░░▀░░▀░▀
+
+
+# DO NOT TOUCH THIS
+config-version: 1.3.1
+# DO NOT TOUCH THIS
+
+# ╔════════════════════════════════════════════╗
+# ║            CLANSX PLACEHOLDERS             ║
+# ╚════════════════════════════════════════════╝
+
+# ─────────────────────── PLAYER ───────────────────────
+# %cx_player_balance%           - Player economy balance (Vault)
+
+# ──────────────────────── CLAN ────────────────────────
+# %cx_clan_name%                - Clan name
+# %cx_clan_leader%              - Current clan leader name
+# %cx_clan_founder%             - Clan founder name
+# %cx_clan_balance%             - Clan bank balance
+# %cx_clan_kills%               - Total clan kills
+
+# ──────────────────────── WARS ────────────────────────
+# %cx_clan_war_streak%          - Current war win streak
+# %cx_clan_war_won%             - Total wars won
+# %cx_clan_war_defeated%        - Total wars lost
+# %cx_clan_war_active%          - Active wars count
+# %cx_clan_war_total%           - Total wars played
+
+# ─────────────────────── MEMBERS ──────────────────────
+# %cx_clan_membercount%         - Total clan members
+# %cx_clan_membercount_online%  - Online clan members
+# %cx_clan_membercount_offline% - Offline clan members
+
+# ───────────────────────── NOTES ──────────────────────
+# Placeholders require PlaceholderAPI
+# If player has no clan, placeholders may return fallback values
+# ──────────────────────────────────────────────────────
+
+# QUICK WARNING
+# Placeholders marked with $$ph(and a number)$$ are only available in that specific message.
+
+prefix: "&3&L[Clans&b&lX&3&l]: "
+
+placeholderapi:
+  no-player: "&c&lNo Player"
+  no-clan: "&c&lUnknown"
+  no-clan-file: "&c&lNo clan file!"
+  empty-field: "&cN/A"
+
+ui:
+  back: "&7‹ Back"
+  next: "&eNext ›"
+  previous: "&e‹ Previous"
+
+stats:
+  header: "&6==================== &b&lCLAN STATS &6===================="
+  none: "None"
+  list-item: "&7- &f"
+  name: "&eName: &f"
+  founder: "&eFounder: &f"
+  leader: "&eLeader: &f"
+  balance: "&eBalance: &f$"
+  privacy: "&ePrivacy: &f"
+  members: "&eMembers:"
+  invited: "Invited Members"
+  wars: "&eWars:"
+  active-wars: "&7Active: "
+  won-wars: "&7Won: "
+  def-wars: "&7Defeated: "
+  streak: "&7Current Streak: "
+  total-kills: "&7Total Kills: "
+  footer: "&6===================================================="
+
+invitations:
+  message: "&2You were invited to these clans:"
+  list_item: "&7» &f&l$$ph1$$" # e.g: » clan_name
+
+welcome_message:
+  no_clan:
+    - "&f-----------------------"
+    - "&eWelcome back!"
+    - "&7Use &a/cls create &7to create your clan."
+    - "&f-----------------------"
+
+  self:
+    - "&f-----------------------"
+    - "&fWelcome &e%player_name%"
+    - "&e&a%cx_clan_name%"
+    - "&7Online members: &a%cx_clan_membercount_online%&7/&f%cx_clan_membercount%"
+    - "&f-----------------------"
+
+  to_clan:
+    - "&f-----------------------"
+    - "&a%player_name% &7from your clan has joined the server"
+    - "&f-----------------------"
+
+general:
+  hint: "&c&lUSE: &f"
+
+errors:
+  console: "&cConsole can´t use this command! Only for players."
+  no_perms: "&cYou don't have permissions to do this."
+  already_in_clan: "&cYou are already in a clan."
+  already_at_war: "&cYour clan is already in war with &&ph1$$."
+  should_use: "&c&lUSE: &f$$ph1$$"
+  unexistent_clan: "&cThe clan $$ph1$$ does not exists!"
+  not_in_clan: "&cYou're not in a clan!"
+  not_leader: "You're not the leader of the clan."
+  clan_not_found: "&cNo clan found with that name."
+  self_declaration: "&cYou can't declare the war to your own clan."
+  in_truce: "&cYou cannot declare war on $$ph1$$ because both are in a truce agreement. &7(Wait until the truce ends)"
+  max_wars: "&cYour clan reached the active wars limit!"
+  no_balance_war: "&cYou need $&e$$ph1$$ &cto declare the war"
+  war_not_found: "&cWar not found or is no longer active."
+  already_joined_war: "&cYour clan is already participating in this war."
+  influences_disabled: "&cExternal clans cannot join this war (influences disabled)."
+  too_many_wars: "&cYour clan is already in too many wars."
+  not_enough_prestige: "&cNot enough prestige. Required: &e$$ph1$$ &c| Current: &e$$ph2$$"
+  not_in_war: "&cYour clan is not part of this war."
+  peace_window_expired: "&cThe peace request window has expired for this war."
+  invalid_term_format: "&cInvalid term format: &e$$ph1$$&c. Use <side>:<type>[:<amount>]"
+  invalid_side: "&cInvalid side: &e$$ph1$$&c. Use off/def/moff/mdef"
+  term_not_enabled: "&cPeace term '&e$$ph1$$&c' is not enabled in config."
+  term_requires_amount: "&cTerm &e$$ph1$$ &crequires an amount."
+  amount_not_number: "&cAmount must be a number in: &e$$ph1$$"
+  white_peace_combined: "&cWhite peace cannot be combined with other terms."
+  peace_offer_not_found: "&cPeace offer #$$ph1$$ not found."
+  peace_offer_not_pending: "&cThis offer is no longer pending."
+  cannot_accept_own_offer: "&cYou can't accept your own peace offer."
+  cannot_reject_own_offer: "&cYou can't reject your own peace offer."
+  below_min_balance: "&cClan $$ph1$$ would go below minimum balance. Can't accept."
+  main_clans_cannot_leave: "&cThe main warring clans cannot leave. Send a peace offer instead."
+  clan_data_corrupted: "&cClan data corrupted."
+  player_not_found: "&cPlayer not found."
+  invalid_action: "&cInvalid action."
+  invalid_amount: "&cInvalid amount."
+  offer_id_not_number: "&cOfferID must be a number."
+  cannot_expel_self: "&cYou can't expel yourself."
+  player_not_in_clan: "&cThat player is not in your clan."
+  invalid_clan_name: "&cInvalid clan name."
+  same_name: "&cYou can't use the same name you're changing."
+  clan_name_taken: "&cA clan with that name already exists."
+  rename_failed: "&cFailed to rename clan."
+  invalid_privacy_value: "&cYou &lMUST &cchoose a correct value! &8(public/private)"
+  invalid_edit_option: "&cInvalid edit option!"
+  amount_must_be_positive: "&cAmount must be greater than 0."
+  not_enough_money: "&cNot enough money to deposit."
+  clan_not_enough_money: "&cClan doesn't have enough money."
+  invalid_operation: "&cInvalid operation. Use deposit or withdraw."
+  cannot_invite_self: "&cYou can´t invite yourself."
+  player_already_in_clan: "&cThis player is already in a clan."
+  clan_is_private: "&cThis clan is private."
+  no_clans_registered: "&cNo clans registered."
+  invalid_reason: "&cPlease provide a valid reason."
+  report_already_submitted: "&cThis report was already submitted."
+  max_clans_reached: "&cThe server has reached the maximum number of clans (&e$$ph1$$&c)."
+  name_not_allowed: "&cThis name is not allowed."
+  insufficient_funds: "&cYou need &e$$$ph1$$"
+  clan_creation_error: "&cError creating clan."
+
+  relations:
+    no_available_clans: "&cNo available clans"
+    invalid_target: "&cInvalid target"
+    is_relation: "&cYou are $$ph1$$"
+    already_relation: "&cAlready $$ph1$$"
+    max_alliances: "&cYou have reached the max number of alliances (&e$$ph1$$&c)."
+    request_already_sent: "&cAlready sent"
+    request_inbox_full: "&cThat clan's request inbox is full (&e$$ph1$$&c max)."
+
+info:
+  resigned_as_leader: "&aYou have resigned as leader. New leader is &e$$ph1$$" # READ ABOVE IF YOU DON'T UNDERSTAND WHAT $$ph1$$ IS
+  new_leader: "&e$$ph1$$ is not the leader anymore! &fNew leader is $$ph2$$"
+  you_are_the_new_leader: "&aYou are now the leader of clan &e$$ph1$$"
+  cannot_resign: "&cCannot resign! You are the only member."
+  invited_to_clans: "&eYou are invited to these clans:"
+  invited_to_clans_item: "&7- &a$$ph1$$ &7(/cl join $$ph1$$)"
+  war_declared: "&4&lWAR DECLARED!"
+  war_name: "&fWar Name: &7$$ph1$$"
+  war_main_participants: "&eOffensive: &f&l$$ph1$$ &7/ &eDefensive: &e&l$$ph2$$"
+  war_ID: "&FWarID: &e$$ph1$$"
+  war_declaration: "&cYour clan has declared the war against &e$$ph1$$"
+  received_war: "&c&lWAR DECLARED AGAINST YOUR CLAN!"
+  received_war_info: "&cThe clan &e$$ph1$$ &chas declared the war to your clan!"
+  war_news: "&cOh no! The clan &4&l$$ph1$$ &cdeclared the war against the clan &4&l$$ph2$$"
+  joined_war: "&aYou joined the war &e$$ph1$$ &aon the &f$$ph2$$ &aside."
+  peace_offer_sent: "&aPeace offer #$$ph1$$ sent for war &e$$ph2$$&a."
+  peace_offer_received: "&eClan &f$$ph1$$ &ehas sent a peace offer (ID: &f$$ph2$$&e) for war &f$$ph3$$"
+  peace_offer_use_accept: "&7Use &a/cls war accept &f$$ph1$$ $$ph2$$ &7to accept."
+  peace_accepted_broadcast: "&aPeace accepted! War &e$$ph1$$ &ahas ended."
+  peace_accepted_self: "&aPeace offer #$$ph1$$ accepted. The war is over."
+  peace_offer_rejected: "&cPeace offer #$$ph1$$ rejected."
+  peace_offer_rejected_notify: "&cYour peace offer #$$ph1$$ for war &e$$ph2$$ &cwas rejected."
+  war_forfeit: "&aClan &e$$ph1$$ &adisbanded! Your clan won war &e$$ph2$$ &aby forfeit."
+  war_left: "&aYour clan has withdrawn from war &e$$ph1$$&a."
+  pending_notifications_header: "&e&lYou have pending notifications:"
+  perms_lost_in_clanChest: "&cYou lost permission to modify the clan chest."
+  reload_complete: "&aReload complete."
+  clan_disbanded: "&aClan disbanded."
+  clan_disbanded_reward: "&2Clan disbanded. &famount refunded: &e$$$ph1$$"
+  clan_disbanded_notify: "&cYour clan has been disbanded by $$ph1$$."
+  clan_disbanded_no_members: "&2Clan disbanded &7(no members left)"
+  clan_disbanded_no_members_reward: "&2Clan disbanded &7(no members left). You won: &e$$$ph1$$"
+  no_clan_reports: "&aNo clan reports."
+  clan_economy_updated: "&aClan economy updated."
+  player_economy_updated: "&aEconomy updated for &f$$ph1$$"
+  player_expelled: "&aPlayer &f$$ph1$$ &ahas been expelled from the clan."
+  you_were_expelled: "&cYou have been expelled from the clan."
+  deposited: "&2Deposited &a$$$ph1$$&2 to clan &e$$ph2$$"
+  withdrew: "&2Withdrew &a$$$ph1$$&2 from clan &e$$ph2$$"
+  invitation_sent: "&2Invitation sent to: &e$$ph1$$"
+  invited_to_clan: "&2You have been invited to the clan: &e$$ph1$$"
+  left_clan_new_leader: "&cYou left the clan. &e$$ph1$$ &cis the new leader."
+  left_clan: "&2You left the clan."
+  joined_clan: "&2You joined &e$$ph1$$"
+  list_header: "&8&m──────── &3&lClansX &8&m────────"
+  list_footer: "&8&m────────────────────────"
+  list_item_format: "&a$$ph1$$ &8┃ &7Leader: &f$$ph2$$ &8┃ &7Members: &f$$ph3$$ &8┃ &cKills: &f$$ph4$$"
+  clan_reported: "&aClan &f$$ph1$$ &ahas been reported."
+  clan_renamed: "&aClan renamed to &f$$ph1$$"
+  privacy_updated: "&aClan privacy set to &f$$ph1$$"
+  clan_created: "&2Clan &e$$ph1$$ &2created."
+
+  relations:
+    request_sent: "&aRequest sent"
+    new_request_online: "&3| &eYou received a new alliance request."
+    new_request_button: "&3| &a[OPEN MENU]"
+    new_request_offline: "&eClan &f$$ph1$$ &esent an alliance request to &f$$ph2$$&e. Use &a/cls relations &eto manage it."
+    established_ally_broadcast: "&aNow allied with &f$$ph1$$"
+    established_enemy_broadcast: "&cNow enemy of &f$$ph1$$"
+    removed_ally_broadcast: "&cAlliance removed with &f$$ph1$$"
+    removed_enemy_broadcast: "&aNo longer enemy of &f$$ph1$$"
+    ally_offline_notify: "&aClan &f$$ph1$$ &aand &f$$ph2$$ &aare now allies!"
+    enemy_offline_notify: "&cClan &f$$ph1$$ &chas marked &f$$ph2$$ &cas enemy."
+    request_rejected: "&cRequest rejected"
+    clan_head_error: "&cError in clansx!"
+gui:
+  wars:
+    common:
+      back: "&7← Back"
+    no_war_selected: "&cNo war selected. Please try again."
+    main_cannot_withdraw: "&cMain clans cannot withdraw from their own war."
+    cannot_accept_own: "&cYou can't accept your own offer."
+    main:
+      title: "&8⚔ &c&lWar Manager &8⚔"
+      declare:
+        name: "&c&lDeclare War"
+        lore:
+          - "&7Challenge another clan to war."
+          - "&7Only the clan leader can do this."
+          - ""
+          - "$$ph1$$"
+        can: "&aYou can declare war."
+        cannot: "&cRequires leader role."
+      mywars:
+        name: "&e&lMy Wars"
+        lore:
+          - "&7View and manage wars"
+          - "&7your clan is currently involved in."
+          - ""
+          - "$$ph1$$"
+        can: "&aClick to browse."
+        cannot: "&cYou are not in a clan."
+      allwars:
+        name: "&b&lAll Active Wars"
+        lore:
+          - "&7Browse every ongoing war"
+          - "&7happening on the server."
+          - ""
+          - "&aAlways available."
+      join:
+        name: "&6&lJoin a War"
+        lore:
+          - "&7Support another clan as an ally."
+          - "&7Choose a side: offensive or defensive."
+          - ""
+          - "$$ph1$$"
+        can: "&aClick to see available wars."
+        cannot: "&cRequires leader role."
+      peace:
+        name: "&f&lPropose Peace"
+        lore:
+          - "&7Open peace negotiations"
+          - "&7for one of your active wars."
+          - ""
+          - "$$ph1$$"
+        can: "&aClick to choose a war."
+        cannot: "&cRequires leader role."
+      offers:
+        name: "&a&lAccept / Reject Offers"
+        lore:
+          - "&7Review incoming peace offers"
+          - "&7from enemy clans."
+          - ""
+          - "$$ph1$$"
+        can: "&aClick to manage offers."
+        cannot: "&cRequires leader role."
+      withdraw:
+        name: "&7&lWithdraw from War"
+        lore:
+          - "&7Leave a war your clan joined"
+          - "&7as an allied force."
+          - "&8(Cannot withdraw if you started it.)"
+          - ""
+          - "$$ph1$$"
+        can: "&eClick to choose a war."
+        cannot: "&cRequires leader role."
+      stats:
+        name: "&d&lWar History / Stats"
+        lore:
+          - "&7View your clan's war record."
+          - "&7Wins, losses, streaks and kills."
+          - ""
+          - "$$ph1$$"
+        can: "&aClick to view stats."
+        cannot: "&cYou are not in a clan."
+    declare:
+      title: "&c&lDeclare War — Choose Target"
+      target_lore:
+        - "&7Leader: &f$$ph1$$"
+        - "&7Members: &f$$ph2$$"
+        - "&7Prestige: &6$$ph3$$"
+        - ""
+        - "&c&lClick to declare war!"
+      empty_name: "&7No available clans"
+      empty_lore: "&8All clans are already at war or in truce with you."
+    mywars:
+      title: "&e&lMy Active Wars"
+      manage_hint: "&e&lClick to manage this war"
+      empty_name: "&7No active wars"
+      empty_lore: "&8Your clan is at peace."
+    join:
+      title: "&6&lJoin a War — Choose Side"
+      left_click: "&eLeft-click: &cJoin Offensive"
+      right_click: "&eRight-click: &aJoin Defensive"
+      empty_name: "&7No joinable wars"
+      empty_lore: "&8All wars are already joined or you're in all of them."
+    peaceselect:
+      title: "&f&lPropose Peace — Choose War"
+      hint: "&eClick to open peace terms."
+      empty_name: "&7No active wars"
+      empty_lore: "&8Your clan has no ongoing wars."
+    offersselect:
+      title: "&a&lAccept / Reject — Choose War"
+      has_offers: "&aHas pending offers — click to review."
+      no_offers: "&7No incoming offers."
+      empty_name: "&7No active wars"
+      empty_lore: "&8Your clan has no ongoing wars."
+    withdrawselect:
+      title: "&7&lWithdraw — Choose War"
+      main_cannot: "&cMain clans cannot withdraw."
+      can_withdraw: "&eClick to withdraw from this war."
+      empty_name: "&7No active wars"
+      empty_lore: "&8Your clan is not in any wars."
+    stats:
+      title: "&d&lWar Stats — &e$$ph1$$"
+      kills_name: "&6&lTotal Kills"
+      kills_lore: "&7$$ph1$$ kills registered."
+      won_name: "&a&lWars Won"
+      won_lore: "&7$$ph1$$ wars won."
+      defeated_name: "&c&lWars Defeated"
+      defeated_lore: "&7$$ph1$$ wars lost."
+      streak_name: "&e&lWin Streak"
+      streak_lore: "&7Current streak: &6$$ph1$$"
+      active_name: "&c&lActive Wars"
+      active_lore: "&7Currently in &c$$ph1$$ &7active wars."
+    allwars:
+      title: "&b&lAll Active Wars"
+      empty_name: "&7No active wars"
+      empty_lore: "&8The server is at peace."
+    detail:
+      info_name: "&e&lWar Info"
+      info_offensive: "&7Offensive: &c$$ph1$$"
+      info_defensive: "&7Defensive: &a$$ph1$$"
+      info_off_header: "&cOffensive stats:"
+      info_def_header: "&aDefensive stats:"
+      info_kills: "  &7Kills: &f$$ph1$$"
+      info_deaths: "  &7Deaths: &f$$ph1$$"
+      info_points: "  &7Points: &6$$ph1$$"
+      offer_from: "&7From: &f$$ph1$$"
+      offer_terms_header: "&7Terms:"
+      offer_term_line: "  &e$$ph1$$"
+      offer_accept: "&aLeft-click: &2Accept"
+      offer_reject: "&cRight-click: &4Reject"
+      offer_name: "&ePeace Offer #$$ph1$$"
+      peace_name: "&f&lPropose Peace"
+      peace_lore1: "&7Open the peace terms menu."
+      peace_lore2: "&eClick to choose your terms."
+      withdraw_name: "&7&lWithdraw from War"
+      withdraw_lore: "&7Leave this war (allied clans only)."
+    peacetype:
+      title: "&8Peace Terms &7— &fChoose Type"
+      selected_name: "&e&lSelected Terms ($$ph1$$)"
+      selected_header: "&7Selected so far:"
+      selected_line: "  &a✔ &f$$ph1$$"
+      selected_hint: "&eClick &7GREEN WOOL &eto send all."
+      whitepeace_name: "&f&lWhite Peace"
+      whitepeace_lore: "&7Both clans walk away — nobody wins."
+      whitepeace_multi: "&e(Cannot combine with other terms)"
+      whitepeace_click: "&eClick to $$ph1$$"
+      money_name: "&6&lMoney Demand"
+      money_lore1: "&7Demand money from &f$$ph1$$&7."
+      money_lore2: "&7Their current balance: &6$$$ph1$$"
+      money_click: "&eClick to set the amount."
+      xp_name: "&b&lXP / Prestige Demand"
+      xp_lore1: "&7Demand XP/prestige from &f$$ph1$$&7."
+      xp_lore2: "&7Their prestige: &b$$ph1$$ &7(Level &e$$ph2$$&7)"
+      xp_click: "&eClick to set the amount."
+      disband_name: "&c&lDemand Disbandment"
+      disband_lore1: "&7Demand that &f$$ph1$$ &7disband."
+      disband_lore2: "&cThis permanently destroys their clan."
+      disband_click: "&eClick to $$ph1$$"
+      unify_name: "&d&lUnify Clans"
+      unify_lore1: "&7Merge both main clans into one."
+      unify_lore2: "&7New clan name: &e$$ph1$$"
+      unify_lore3: "&7Prestige, members, and chest are combined."
+      unify_click: "&eClick to $$ph1$$"
+      send_name: "&a&lSend Peace Offer"
+      send_lore: "&7Send all selected terms."
+      clear_name: "&c&lClear Selection"
+      clear_lore: "&7Remove all selected terms."
+      click_select: "select"
+      click_propose: "propose"
+      click_add: "add to terms"
+    moneyinput:
+      title: "&6Money Demand &8— &fSet Amount"
+      amount_name: "&e&lAmount: &f$$$ph1$$"
+      amount_opponent: "&7Opponent: &f$$ph1$$"
+      amount_balance: "&7Their balance: &6$$$ph1$$"
+      amount_step: "&7Step: &f$$ph1$$"
+      opponent_name: "&b&lOpponent Info"
+      opponent_clan: "&7Clan: &f$$ph1$$"
+      opponent_balance: "&7Balance: &6$$$ph1$$"
+      increase_name: "&a▲ Increase"
+      increase_lore: "&7+$$ph1$$"
+      decrease_name: "&c▼ Decrease"
+      decrease_lore: "&7-$$ph1$$"
+      step_name: "&7Step: &f$$ph1$$"
+      step_left: "&7Left-click: ÷10"
+      step_right: "&7Right-click: ×10"
+      send_name: "&a&lSend"
+      send_lore: "&7Propose this money demand."
+      cancel_name: "&c&lCancel"
+      cancel_lore: "&7Go back."
+    xpinput:
+      title: "&bXP Demand &8— &fSet Amount"
+      amount_name: "&b&lAmount: &f$$ph1$$ XP"
+      amount_opponent: "&7Opponent: &f$$ph1$$"
+      amount_prestige: "&7Their prestige: &b$$ph1$$"
+      amount_step: "&7Step: &f$$ph1$$"
+      opponent_name: "&b&lOpponent Info"
+      opponent_clan: "&7Clan: &f$$ph1$$"
+      opponent_prestige: "&7Prestige: &b$$ph1$$"
+      increase_name: "&a▲ Increase"
+      increase_lore: "&7+$$ph1$$"
+      decrease_name: "&c▼ Decrease"
+      decrease_lore: "&7-$$ph1$$"
+      step_name: "&7Step: &f$$ph1$$"
+      step_left: "&7Left-click: ÷10"
+      step_right: "&7Right-click: ×10"
+      send_name: "&a&lSend"
+      send_lore: "&7Propose this XP demand."
+      cancel_name: "&c&lCancel"
+      cancel_lore: "&7Go back."
+    warlore:
+      side_offensive: "&7Your side: &cOffensive"
+      side_defensive: "&7Your side: &aDefensive"
+      side_observer: "&7Your side: &7Observer"
+      score: "&7Score: &c$$ph1$$ &7vs &a$$ph2$$"
+    terms:
+      side_moff: "Offensive"
+      side_mdef: "Defensive"
+      side_off: "All Offensive"
+      side_def: "All Defensive"
+      whitepeace: "White Peace"
+      money: "$$ph1$$ pays $$$ph2$$"
+      xp: "$$ph1$$ loses $$ph2$$ XP"
+      disband: "$$ph1$$ disbands"
+      unify: "Unify both main clans"
+
+  relations:
+    main:
+      title: "&8🤝 &b&lRelations Manager &8🤝"
+      allies:
+        name: "&a&lAllies"
+        lore:
+          - "&7View and manage your"
+          - "&7allied clans."
+          - ""
+          - "&aClick to open"
+
+      enemies:
+        name: "&c&lEnemies"
+        lore:
+          - "&7View and manage your"
+          - "&7enemy clans."
+          - ""
+          - "&cClick to open"
+
+      requests:
+        name: "&e&lRequests"
+        lore:
+          - "&7Incoming alliance requests"
+          - "&7from other clans."
+          - ""
+          - "&eClick to open"
+
+      send_ally:
+        name: "&a&lSend Ally Request"
+        lore:
+          - "&7Choose a clan to send"
+          - "&7an alliance request to."
+          - ""
+          - "&aClick to select"
+
+      add_enemy:
+        name: "&c&lAdd Enemy"
+        lore:
+          - "&7Mark another clan"
+          - "&7as your enemy."
+          - ""
+          - "&cClick to select"
+
+    selector:
+      title_ally: "&8🤝 &a&lSelect Clan — Ally"
+      title_enemy: "&8⚔ &c&lSelect Clan — Enemy"
+      page_lore: "&7Page $$ph1$$"
+
+    requests:
+      title: "&8📨 &e&lAlliance Requests"
+      empty_name: "&7No pending requests"
+      empty_lore:
+        - "&8No clans have sent"
+        - "&8alliance requests."
+      item_lore:
+        - "&7Prestige: &6$$ph1$$"
+        - "&7Members: &f$$ph2$$"
+        - ""
+        - "&aLeft-click: Accept"
+        - "&cRight-click: Reject"
+
+    list:
+      title_allies: "&8🤝 &a&lYour Allies"
+      title_enemies: "&8⚔ &c&lYour Enemies"
+      empty_name: "&7Empty"
+      empty_lore: "&8No $$ph1$$ yet."
+      item_lore:
+        - "&7Prestige: &6$$ph1$$"
+        - "&7Members: &f$$ph2$$"
+        - ""
+        - "$$ph3$$"
+      remove_hint_ally: "&cLeft-click: Remove ally"
+      remove_hint_enemy: "&cLeft-click: Remove enemy"
+
+    clan_head:
+      lore:
+        - "&7Founder: &f$$ph1$$"
+        - "&7Prestige: &6$$ph2$$"
+        - "&7Members: &f$$ph3$$"
+        - ""
+        - "&aClick to select"
+
+admin:
+  help:
+    - "&3&l=== &b&lClansX Admin ==="
+    - "&e/clx reload"
+    - "&e/clx reports"
+    - "&e/clx disband <Clan>"
+    - "&e/clx eco <player|clan> <name> <set|add|reset> <amount>"
+    - "&3&l======================"
+  reports:
+    console_clan_header: "&6Clan: &e$$ph1$$"
+    console_line: "&7 - &f$$ph1$$"
+    gui_title: "&8Clan Reports &7($$ph1$$/$$ph2$$)"
+    gui_item_name: "&6$$ph1$$"
+    gui_item_lore_line: "&7- &f$$ph1$$"
+
+users:
+  help:
+    - ""
+    - "&8&m        &r &3&lClans&b&lX &8— &7Command Reference &8&m        "
+    - ""
+    - "  &b&lGeneral"
+    - "  &8┃ &3/cls create &8<&7name&8>  &8— &fCreate a new clan"
+    - "  &8┃ &3/cls join &8<&7clan&8>    &8— &fJoin a public clan"
+    - "  &8┃ &3/cls leave            &8— &fLeave your current clan"
+    - "  &8┃ &3/cls list             &8— &fBrowse all registered clans"
+    - "  &8┃ &3/cls chat             &8— &fHow to use clan chat"
+    - ""
+    - "  &b&lStats"
+    - "  &8┃ &3/cls stats            &8— &fView your clan's stats & war history"
+    - "  &8┃ &3/cls pstats           &8— &fView your personal stats & clan history"
+    - ""
+    - "  &b&lManagement &8(Leader only)"
+    - "  &8┃ &3/cls invite &8<&7player&8>  &8— &fInvite a player to your clan"
+    - "  &8┃ &3/cls kick &8<&7player&8>    &8— &fExpel a member from the clan"
+    - "  &8┃ &3/cls resign            &8— &fStep down and assign a new leader"
+    - "  &8┃ &3/cls disband           &8— &fPermanently disband your clan"
+    - "  &8┃ &3/cls edit name &8<&7name&8>               &8— &fRename your clan"
+    - "  &8┃ &3/cls edit privacy &8<&7public&8|&7private&8>  &8— &fChange clan visibility"
+    - ""
+    - "  &b&lEconomy"
+    - "  &8┃ &3/cls eco deposit &8<&7amount&8>   &8— &fDeposit money into the clan bank"
+    - "  &8┃ &3/cls eco withdraw &8<&7amount&8>  &8— &fWithdraw money from the clan bank"
+    - ""
+    - "  &b&lChest & Relations"
+    - "  &8┃ &3/cls chest             &8— &fOpen the shared clan chest"
+    - "  &8┃ &3/cls relations         &8— &fManage allies and enemies (GUI)"
+    - ""
+    - "  &b&lWars &8(Leader only)"
+    - "  &8┃ &3/cls war                          &8— &fOpen the War Manager GUI"
+    - "  &8┃ &3/cls war start &8<&7clan&8>              &8— &fDeclare war on a clan"
+    - "  &8┃ &3/cls war join &8<&7warID&8> &8<&7off&8|&7def&8>      &8— &fJoin a war as ally"
+    - "  &8┃ &3/cls war peace &8<&7warID&8> &8<&7terms...&8>   &8— &fSend peace terms"
+    - "  &8┃ &3/cls war accept &8<&7warID&8> &8<&7offerID&8>   &8— &fAccept a peace offer"
+    - "  &8┃ &3/cls war reject &8<&7warID&8> &8<&7offerID&8>   &8— &fReject a peace offer"
+    - "  &8┃ &3/cls war leave &8<&7warID&8>              &8— &fWithdraw from a war (allies only)"
+    - ""
+    - "  &b&lOther"
+    - "  &8┃ &3/cls report &8<&7clan&8> &8<&7reason...&8>  &8— &fReport a clan to admins"
+    - ""
+    - "&8&m                                            "
+    - ""

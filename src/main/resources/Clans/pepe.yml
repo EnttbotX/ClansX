@@ -1,0 +1,28 @@
+name: pepeclan
+founder: Julio
+leader: Julio
+privacy: Public
+balance: 0
+kills: 0
+xp: 900
+prestige: 23
+
+users:
+  - Julio
+
+invitations: []
+
+relations:
+  allies: []
+  enemies: []
+  requests: []
+
+wars:
+  active: []
+  won: []
+  defeated: []
+  streak: 0
+
+reports: []
+
+clanChest: []
